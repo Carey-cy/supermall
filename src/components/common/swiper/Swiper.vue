@@ -168,7 +168,7 @@
         }
 
         //移动到正确的位置
-        this.scrollContent(-this.currentIndex * this.totalWidth)
+        this.scrollContent( - this.currentIndex * this.totalWidth)
 
         //移动完成，打开定时器
         this.startTimer()
