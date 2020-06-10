@@ -49,7 +49,7 @@
   import RecommendView from './childComps/RecommendView';
   import FeatureView from './childComps/FeatureView';
 
-  import {getHomeMultidata} from 'network/home.js';
+  import {getHomeMultidata,getHomeGoods} from 'network/home.js';
 
   export default {
     name: 'Home',
@@ -62,27 +62,44 @@
     },
     data() {
       return {
-        banners:[],
-        recommends:[]
-        // dkeyword:[],
-        // keywords:[]
         // result:null
+        banners:[],
+        recommends:[],
+        
+        goods: {
+          'pop':{page:0,list:[]},
+          'new':{page:0,list:[]},
+          'sell':{page:0,list:[]},
+        }
       }
     },
     created(){
       //请求多个数据
-      getHomeMultidata().then(res=>{    
+      this.getHomeMultidata()
+      //请求商品数据
+      this.getHomeGoods('pop')
+      this.getHomeGoods('new')
+      this.getHomeGoods('sell')
+    },
+    methods: {
+      getHomeMultidata() {
+        getHomeMultidata().then(res=>{    
         // this.result = res
-        // console.log(res);
-        
-        
+        // console.log(res); 
         this.banners = res.data.data.banner.list;
         this.recommends = res.data.data.recommend.list
-        console.log(this.banners);
-        // this.dkeyword = res.data.dkeyword.list
-        // this.keywords = res.data.keywords.list
-      })
-    }
+        // console.log(this.banners);
+        })
+      },
+      getHomeGoods(type) {
+        const page = this.goods[type].page + 1
+        getHomeGoods(type,page).then(res => {
+          // console.log(res);
+          this.goods[type].list.push(...res.data.data.list);
+          this.goods[type].page += 1
+        })
+      }
+    },
   }
 </script>
 
