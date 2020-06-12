@@ -1,16 +1,19 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners="banners"/>
-    <recommend-view :recommends="recommends" />
-    <feature-view />
-    <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" />
-    <goods-list :goods="showGoods" />
+    <scroll class="content">
+      <home-swiper :banners="banners"/>
+      <recommend-view :recommends="recommends" />
+      <feature-view />
+      <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" />
+      <goods-list :goods="showGoods" />
+    </scroll>
   </div>
 </template>
 
 <script>
   import NavBar from 'components/common/navbar/NavBar';
+  import Scroll from 'components/common/scroll/Scroll';
   import TabControl from 'components/content/tabcontrol/TabControl';
   import GoodsList from 'components/content/goods/GoodsList';
 
@@ -25,6 +28,7 @@
     name: 'Home',
     components: {
       NavBar,
+      Scroll,
       TabControl,
       GoodsList,
       HomeSwiper,
@@ -99,9 +103,10 @@
   }
 </script>
 
-<style>
+<style scoped>
   #home {
     padding-top: 44px;
+    position: relative;
   }
   .home-nav {
     background-color: var(--color-tint);
@@ -112,5 +117,12 @@
     left: 0;
     right: 0;
     z-index: 9;
+  }
+  .content {
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    right:0;
+    left:0;
   }
 </style>
