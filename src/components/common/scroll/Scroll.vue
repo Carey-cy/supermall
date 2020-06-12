@@ -15,11 +15,17 @@
         bscroll:null
       }
     },
+
     mounted() {
       this.bscroll = new BScroll(this.$refs.wrapper,{
 
       })
-    }
+    },
+    methods: {
+      bscrollTo(x,y,time=300){
+        this.bscroll.scrollTo(x,y,time)
+      }
+    },
   }
 </script>
 

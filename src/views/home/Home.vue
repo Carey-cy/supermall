@@ -1,13 +1,14 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content">
+    <scroll class="content" ref="scroll">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends" />
       <feature-view />
       <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" />
       <goods-list :goods="showGoods" />
     </scroll>
+    <back-top @click.native="backClick"/>
   </div>
 </template>
 
@@ -16,6 +17,7 @@
   import Scroll from 'components/common/scroll/Scroll';
   import TabControl from 'components/content/tabcontrol/TabControl';
   import GoodsList from 'components/content/goods/GoodsList';
+  import BackTop from 'components/content/back-top/BackTop';
 
   import HomeSwiper from './childComps/HomeSwiper';
   import RecommendView from './childComps/RecommendView';
@@ -31,6 +33,8 @@
       Scroll,
       TabControl,
       GoodsList,
+      BackTop,
+
       HomeSwiper,
       RecommendView,
       FeatureView,
@@ -78,6 +82,9 @@
             this.currentType = 'sell'
             break
         }
+      },
+      backClick(){
+        this.$refs.scroll.bscrollTo(0,0)
       },
       /** 
        * 网络请求相关方法
