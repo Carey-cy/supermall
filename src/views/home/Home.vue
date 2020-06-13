@@ -1,14 +1,14 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content" ref="scroll">
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends" />
       <feature-view />
       <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" />
       <goods-list :goods="showGoods" />
     </scroll>
-    <back-top @click.native="backClick"/>
+    <back-top @click.native="backClick"  v-show="isShow"/>
   </div>
 </template>
 
@@ -50,7 +50,8 @@
           'new':{page:0,list:[]},
           'sell':{page:0,list:[]},
         },
-        currentType: 'pop'
+        currentType: 'pop',
+        isShow: false
       }
     },
     created(){
@@ -85,6 +86,10 @@
       },
       backClick(){
         this.$refs.scroll.bscrollTo(0,0)
+      },
+      contentScroll(position){
+        console.log(position)
+        this.isShow = Math.abs(position.y) > 1000
       },
       /** 
        * 网络请求相关方法

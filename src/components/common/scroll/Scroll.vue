@@ -15,10 +15,21 @@
         bscroll:null
       }
     },
+    props:{
+      probeType:{
+        type:Number,
+        default:0
+      }
+    },
 
     mounted() {
       this.bscroll = new BScroll(this.$refs.wrapper,{
-
+        click:true,
+        probeType: this.probeType
+      })
+      this.bscroll.on('scroll',(position)=>{
+        console.log(position)
+        this.$emit('scroll',position)
       })
     },
     methods: {
