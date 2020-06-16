@@ -1,7 +1,12 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
+    <scroll class="content" 
+            ref="scroll" 
+            :probe-type="3"
+            :pull-up-load = "true"
+            @pullingUp = "LoadMore" 
+            @scroll="contentScroll">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends" />
       <feature-view />
@@ -88,8 +93,13 @@
         this.$refs.scroll.bscrollTo(0,0)
       },
       contentScroll(position){
-        console.log(position)
+        // console.log(position)
         this.isShow = Math.abs(position.y) > 1000
+      },
+      LoadMore(){
+        console.log('上了加载');
+        
+        this.getHomeGoods(this.currentType)
       },
       /** 
        * 网络请求相关方法
