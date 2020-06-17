@@ -20,10 +20,7 @@
         type:Number,
         default:0
       },
-      pullUpLoad: {
-        type:Boolean,
-        default:false
-      }
+     
     },
 
     mounted() {
@@ -31,7 +28,7 @@
       this.bscroll = new BScroll(this.$refs.wrapper,{
         click:true,
         probeType: this.probeType,
-        pullUpLoad: this.pullUpLoad
+        
       })
       //2.监听滚动的位置
       this.bscroll.on('scroll',(position)=>{
@@ -39,19 +36,18 @@
         this.$emit('scroll',position)
       })
       //3.监听上拉加载
-      this.bscroll.on('pullingUp',()=>{
-        this.$emit('pullingUp');
-        this.bscroll.finishPullUp()
-      })
-    },
+    }, 
     methods: {
-      bscrollTo(x,y,time=300){
-        this.bscroll.scrollTo(x,y,time)
+      bscrollTo(x,y,time=300) {
+        this.bscroll && this.bscroll.scrollTo(x,y,time)
+      },
+      refresh(){
+        this.bscroll &&　this.bscroll.refresh()
       }
-    },
+    }
   }
 </script>
 
 <style scoped>
 
-</style>>
+</style>

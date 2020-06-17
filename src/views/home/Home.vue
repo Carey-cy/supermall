@@ -4,8 +4,8 @@
     <scroll class="content" 
             ref="scroll" 
             :probe-type="3"
-            :pull-up-load = "true"
-            @pullingUp = "LoadMore" 
+            
+            
             @scroll="contentScroll">
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends" />
@@ -67,6 +67,11 @@
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
     },
+    mounted() {
+      this.$bus.$on('itemImageLoad',()=>{
+        this.$refs.scroll.refresh()
+      })
+    },
     computed: {
       showGoods() {
         return this.goods[this.currentType].list
@@ -96,11 +101,7 @@
         // console.log(position)
         this.isShow = Math.abs(position.y) > 1000
       },
-      LoadMore(){
-        console.log('上了加载');
-        
-        this.getHomeGoods(this.currentType)
-      },
+      
       /** 
        * 网络请求相关方法
       */
