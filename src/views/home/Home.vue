@@ -1,19 +1,27 @@
 <template>
   <div id="home">
-    <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content" 
-            ref="scroll" 
-            :probe-type="3"
-            
-            
-            @scroll="contentScroll">
-      <home-swiper :banners="banners"/>
+    <nav-bar class="home-nav">
+      <div slot="center">购物街</div>
+    </nav-bar>
+    <scroll
+      class="content"
+      ref="scroll"
+      :probe-type="3"
+      @scroll="contentScroll"
+    >
+      <home-swiper :banners="banners" />
       <recommend-view :recommends="recommends" />
       <feature-view />
-      <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" />
+      <tab-control
+        :titles="['流行','新款','精选']"
+        @tabClick="tabClick"
+      />
       <goods-list :goods="showGoods" />
     </scroll>
-    <back-top @click.native="backClick"  v-show="isShow"/>
+    <back-top
+      @click.native="backClick"
+      v-show="isShow"
+    />
   </div>
 </template>
 
@@ -30,6 +38,7 @@
   
 
   import {getHomeMultidata,getHomeGoods} from 'network/home.js';
+  import {debounce} from 'common/untils.js';
 
   export default {
     name: 'Home',
@@ -68,8 +77,10 @@
       this.getHomeGoods('sell')
     },
     mounted() {
+      const refresh = debounce(this.$refs.scroll.refresh(),50)
+      
       this.$bus.$on('itemImageLoad',()=>{
-        this.$refs.scroll.refresh()
+        refresh()
       })
     },
     computed: {
@@ -100,8 +111,7 @@
       contentScroll(position){
         // console.log(position)
         this.isShow = Math.abs(position.y) > 1000
-      },
-      
+      },    
       /** 
        * 网络请求相关方法
       */
@@ -127,25 +137,25 @@
 </script>
 
 <style scoped>
-  #home {
-    padding-top: 44px;
-    position: relative;
-  }
-  .home-nav {
-    background-color: var(--color-tint);
-    color: #fff;
+#home {
+  padding-top: 44px;
+  position: relative;
+}
+.home-nav {
+  background-color: var(--color-tint);
+  color: #fff;
 
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9;
-  }
-  .content {
-    position: absolute;
-    top: 44px;
-    bottom: 49px;
-    right:0;
-    left:0;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9;
+}
+.content {
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  right: 0;
+  left: 0;
+}
 </style>

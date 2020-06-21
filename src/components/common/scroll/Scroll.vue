@@ -42,7 +42,8 @@
         this.bscroll && this.bscroll.scrollTo(x,y,time)
       },
       refresh(){
-        this.bscroll &&　this.bscroll.refresh()
+        this.bscroll &&　this.bscroll.refresh();
+        console.log('--------')
       }
     }
   }
