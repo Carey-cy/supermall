@@ -20,7 +20,10 @@
         type:Number,
         default:0
       },
-     
+      pullUpLoad: {
+        type:Boolean,
+        default: false
+      }
     },
 
     mounted() {
@@ -28,14 +31,21 @@
       this.bscroll = new BScroll(this.$refs.wrapper,{
         click:true,
         probeType: this.probeType,
-        
+        pullUpLoad: this.pullUpLoad
       })
       //2.监听滚动的位置
-      this.bscroll.on('scroll',(position)=>{
-        // console.log(position)
-        this.$emit('scroll',position)
-      })
-      //3.监听上拉加载
+      if(this.probeType ===2 || this.probeType ===3) {
+        this.bscroll.on('scroll',(position)=>{
+          // console.log(position)
+          this.$emit('scroll',position)
+        })
+      }
+      //3.监听上拉加载,滚动到底部
+      if(this.pullUpLoad) {
+        this.bscroll.on('pullingUp',()=>{
+          this.$emit('pullingUp')
+        })
+      }
     }, 
     methods: {
       bscrollTo(x,y,time=300) {
@@ -43,7 +53,10 @@
       },
       refresh(){
         this.bscroll &&　this.bscroll.refresh();
-        console.log('--------')
+        // console.log('--------')
+      },
+      finishPullUp() {
+        this.bscroll && this.bscroll.finishPullUp()
       }
     }
   }
