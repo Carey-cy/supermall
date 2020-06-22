@@ -39,9 +39,9 @@
     line-height: 40px;
     font-size: 15px;
     background-color: #fff;
-    position: sticky;
+    /* position: sticky;
     top: 44px;
-    z-index: 9;
+    z-index: 9; */
   }
   .tab-control-item {
     flex: 1;
