@@ -70,7 +70,9 @@
         currentType: 'pop',
         isShow: false,
         tabOffsetTop:0,
-        isTabFixed:false
+        isTabFixed:false,
+        saveY: 0
+     
       }
     },
     created(){
@@ -89,6 +91,18 @@
       })
       //2.获取tabControl的offsetTop
       
+    },
+    destroyed() {
+      console.log('xiaohui')
+    },
+    activated() {
+      this.$refs.scroll.bscrollTo(0, this.saveY ,0)
+      this.$refs.scroll.refresh()
+      // console.log('activated')
+    },
+    deactivated() {
+      this.saveY = this.$refs.scroll.getScrollY()
+      // console.log('deactivated')
     },
     computed: {
       showGoods() {

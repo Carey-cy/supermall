@@ -57,6 +57,9 @@
       },
       finishPullUp() {
         this.bscroll && this.bscroll.finishPullUp()
+      },
+      getScrollY() {
+        return this.bscroll ? this.bscroll.y : 0
       }
     }
   }
