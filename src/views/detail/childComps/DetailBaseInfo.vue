@@ -103,7 +103,7 @@
   top: 2px;
 }
 .info-services-item span {
-  font-size: 13px;
+  font-size: 12px;
   color: #333;
 }
 </style>
