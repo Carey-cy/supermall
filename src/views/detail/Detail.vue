@@ -1,9 +1,11 @@
 <template>
   <div id="detail">
-    <detail-nav/>
-    <detail-swiper :top-images="topImages"/>
-    <detail-base-info :goods = "goods" />
-    <detail-shop-info :shop="shop" />
+    <detail-nav class="detail-nav"/>
+    <scroll class="content">
+      <detail-swiper :top-images="topImages"/>
+      <detail-base-info :goods = "goods" />
+      <detail-shop-info :shop="shop" />
+    </scroll>
   </div>
 </template>
 
@@ -14,6 +16,8 @@
   import DetailShopInfo from './childComps/DetailShopInfo';
 
   import {getDetail,Goods,Shop} from 'network/detail.js';
+
+  import Scroll from 'components/common/scroll/Scroll';
 
   export default {
     name:'Detail',
@@ -29,7 +33,8 @@
       DetailNav,
       DetailSwiper,
       DetailBaseInfo,
-      DetailShopInfo
+      DetailShopInfo,
+      Scroll
     },
     created() {
       const data = 
@@ -55,5 +60,16 @@
     position: relative;
     z-index: 9;
     background-color: #fff;
+    height: 100vh;
+  }
+
+  .detail-nav {
+    position: relative;
+    z-index: 9;
+    background-color: #fff;
+  }
+
+  .content {
+    height: calc(100% - 44px);
   }
 </style>
