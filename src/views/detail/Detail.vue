@@ -7,6 +7,7 @@
       <detail-shop-info :shop="shop" />
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"/>
       <detail-param-info :param-info="paramInfo" />
+      <detail-comment-info :comment-info="commentInfo" />
     </scroll>
   </div>
 </template>
@@ -18,6 +19,7 @@
   import DetailShopInfo from './childComps/DetailShopInfo';
   import DetailGoodsInfo from './childComps/DetailGoodsInfo';
   import DetailParamInfo from './childComps/DetailParamInfo';
+  import DetailCommentInfo from './childComps/DetailCommentInfo';
 
   import {getDetail,Goods,Shop,GoodsParam} from 'network/detail.js';
 
@@ -32,7 +34,8 @@
         goods:{},
         shop: {},
         detailInfo: {},
-        paramInfo: {}
+        paramInfo: {},
+        commentInfo:{}
       }
     },
     methods: {
@@ -47,11 +50,11 @@
       DetailShopInfo,
       DetailGoodsInfo,
       DetailParamInfo,
+      DetailCommentInfo,
       Scroll,
       
     },
     created() {
-      const data = 
       //1.save iid
       this.iid = this.$route.params.iid
       //2.network request
@@ -73,6 +76,11 @@
 
         //5.获取商品参数的信息
         this.paramInfo = new GoodsParam(data.itemParams.info,data.itemParams.rule)
+
+        //6. 获取商品评论的信息
+        if(data.rate.list) {
+          this.commentInfo = data.rate.list[0]
+        }
       })
     },
   }
