@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="goodsItem.show.img" alt="" @load="itemLoad">
+    <img :src="showImage" alt="" @load="itemLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -20,8 +20,19 @@
         }
       }
     },
+    computed: {
+      showImage() {
+        return this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img
+      }
+    },
     methods: {
       itemLoad() {
+        //可以使用这种方法，但我们了解一下混入mixin来解决这个问题
+        // if(this.$route.path.indexOf('/home')){
+        //   this.$bus.$emit('itemImageLoad')
+        // }else if(this.$route.path.indexOf('/detail')){
+        //   this.$bus.$emit('detailItemImgLoad')
+        // }
         this.$bus.$emit('itemImageLoad')
       },
       itemClick() {
