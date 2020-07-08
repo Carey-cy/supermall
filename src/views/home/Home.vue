@@ -73,7 +73,7 @@
         tabOffsetTop:0,
         isTabFixed:false,
         saveY: 0,
-        itemImgLisener: null
+        // itemImgLisener: null  和detail.vue共有，放入混入中
      
       }
     },

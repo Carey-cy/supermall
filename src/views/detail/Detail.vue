@@ -1,14 +1,35 @@
 <template>
   <div id="detail">
-    <detail-nav class="detail-nav"/>
-    <scroll class="content" ref="scroll">
-      <detail-swiper :top-images="topImages"/>
-      <detail-base-info :goods = "goods" />
+    <detail-nav
+      class="detail-nav"
+      @titleClick="titleClick"
+      ref="nav"
+    />
+    <scroll
+      class="content"
+      ref="scroll"
+      @scroll="contentScroll"
+      :probeType="3"
+    >
+      <detail-swiper :top-images="topImages" />
+      <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
-      <!-- <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"/> -->
-      <detail-param-info :param-info="paramInfo" />
-      <detail-comment-info :comment-info="commentInfo" />
-      <goods-list :goods = "recommends"/>
+      <!-- <detail-goods-info
+        :detail-info="detailInfo"
+        @imageLoad="imageLoad"
+      /> -->
+      <detail-param-info
+        :param-info="paramInfo"
+        ref="params"
+      />
+      <detail-comment-info
+        :comment-info="commentInfo"
+        ref="comments"
+      />
+      <goods-list
+        :goods="recommends"
+        ref="recommends"
+      />
     </scroll>
   </div>
 </template> 
@@ -22,7 +43,7 @@
   import DetailParamInfo from './childComps/DetailParamInfo';
   import DetailCommentInfo from './childComps/DetailCommentInfo';
 
-  import {getDetail,getRecommend,Goods,Shop,GoodsParam} from 'network/detail.js';
+  import {getDetail,Goods,Shop,GoodsParam,getRecommend,} from 'network/detail.js';
   import {debounce} from 'common/untils.js';
   import {itemLitenerMixin} from 'common/mixin.js';
 
@@ -41,16 +62,59 @@
         paramInfo: {},
         commentInfo:{},
         recommends: [],
-        itemImgLisener: null
+        // itemImgLisener: null  和home.vue共有，放入混入中
+        themeTopYs:[],
+        getThemeTopYs: null,
+        currentIndex: 0
       }
     },
     mixins:[itemLitenerMixin],
+    methods: {
+      imageLoad() {
+        // this.newRefresh()
+        console.log("scorll",this.$refs.scroll.refresh())
+        this.$refs.scroll.refresh()
+       console.log(this.$refs.scroll.getScrollY())
+      //  this.getThemeTopYs()
+      },
+      titleClick(index){
+        // console.log(/index)
+        this.$refs.scroll.bscrollTo(0,-this.themeTopYs[index],100)
+      },
+      contentScroll(position) {
+        //1,获取y
+        const positionY = -position.y
+        // console.log(positionY);
+        //2.positionY的值和themeTopY的值对比
+        let length = this.themeTopYs.length
+        for(let i=0;i<length;i++){
+          if(this.currentIndex !== i && ((i < length-1 && positionY >= this.themeTopYs[i] && positionY<this.themeTopYs[i+1]) || (i === length-1 && positionY >= this.themeTopYs[i]))){
+            this.currentIndex = i ;
+            console.log(i)
+            this.$refs.nav.currentIndex = this.currentIndex
+          }
+        }
+        
+        
+      }
+    },
+    components: {
+      DetailNav,
+      DetailSwiper,
+      DetailBaseInfo,
+      DetailShopInfo,
+      DetailGoodsInfo,
+      DetailParamInfo,
+      DetailCommentInfo,
+      Scroll,
+      GoodsList
+    },
     created() {
       //1.save iid
       this.iid = this.$route.params.iid
       //2.network request
       getDetail(this.iid).then(res =>{
-        // console.log(res);
+        console.log(res);
         const data = res.data.result
 
         //1.获取顶部轮播图的图片数据
@@ -65,6 +129,7 @@
         //4.获取商品详细的信息
         this.detailInfo = data.detailInfo
 
+
         //5.获取商品参数的信息
         this.paramInfo = new GoodsParam(data.itemParams.info,data.itemParams.rule)
 
@@ -78,6 +143,27 @@
         // console.log(res)
         this.recommends = res.data.data.list
       })
+      //4.给getthemeTopYs赋值
+      // this.getThemeTopYs = debounce(()=>{
+      //     this.themeTopYs = []
+      //     this.themeTopYs.push(0)
+      //     this.themeTopYs.push(this.$refs.params.$el.offsetTop)
+      //     this.themeTopYs.push(this.$refs.comments.$el.offsetTop)
+      //     this.themeTopYs.push(this.$refs.recommends.$el.offsetTop)
+          
+      //     console.log(this.themeTopYs);
+          
+    //     },100)
+    },
+    updated() {
+       this.themeTopYs = []
+          this.themeTopYs.push(0)
+          this.themeTopYs.push(this.$refs.params.$el.offsetTop)
+          this.themeTopYs.push(this.$refs.comments.$el.offsetTop)
+          this.themeTopYs.push(this.$refs.recommends.$el.offsetTop)
+          
+          console.log(this.themeTopYs);
+      // this.getThemeTopYs()
     },
     mounted() {
       // const refresh = debounce(this.$refs.scroll.refresh(),50)
@@ -87,50 +173,37 @@
       // }
       // //2.图片加载完成的事件监听
       // this.$bus.$on('itemImageLoad',this.itemImgLisener)
+      
     },
+   
     destroyed() {
       //销毁时取消对全局的监听（这里没用keepalive,所以deactivated无效，因此在destoryed中写入）
       this.$bus.$off('itemImageLoad',this.itemImgLisener)
-    },
-    methods: {
-      imageLoad() {
-        this.$refs.scroll.refresh()
-      }
-    },
-    components: {
-      DetailNav,
-      DetailSwiper,
-      DetailBaseInfo,
-      DetailShopInfo,
-      DetailGoodsInfo,
-      DetailParamInfo,
-      DetailCommentInfo,
-      Scroll,
-      GoodsList
-    },
+    }
   }
 </script>
 
 <style scoped>
-  #detail {
-    position: relative;
-    z-index: 9;
-    background-color: #fff;
-    height: 100vh;
-  }
+#detail {
+  position: relative;
+  z-index: 9;
+  background-color: #fff;
+  height: 100vh;
+}
 
-  .detail-nav {
-    position: relative;
-    z-index: 9;
-    background-color: #fff;
-  }
+.detail-nav {
+  position: relative;
+  z-index: 9;
+  background-color: #fff;
+}
 
-  .content {
-    height: calc(100% - 44px);
-     /* position: absolute;
+.content {
+  height: calc(100% - 44px);
+  touch-action: none;
+  /* position: absolute;
     top: 44px;
     bottom: 58px;
     left: 0;
     right: 0; */
-  }
+}
 </style>

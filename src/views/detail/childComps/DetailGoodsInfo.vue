@@ -31,18 +31,19 @@
     },
     methods: {
       imgLoad() {
-        //判断，所有图片加载完了在进行回调
+        // 判断，所有图片加载完了在进行回调
         this.counter += 1
         if(this.counter === this.imgsLength) {
           this.$emit('imageLoad')
         }
+        // this.$emit('imageLoad')
       } 
     },
-    //watch 监听属性的变化
+    // watch 监听属性的变化
     watch: {
-      detailInfo() {
-        this.imgsLength = this.detailInfo.detailImage[0].list.length
-      }
+	    detailInfo() {
+	    	this.imgsLength = this.detailInfo.detailImage[0].list.length
+	    }
     }
   }
 </script>
@@ -97,7 +98,6 @@
   color: #333;
   font-size: 15px;
 }
-
 .info-list img {
   width: 100%;
 }
