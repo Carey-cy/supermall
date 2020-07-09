@@ -161,6 +161,9 @@
           this.themeTopYs.push(this.$refs.params.$el.offsetTop)
           this.themeTopYs.push(this.$refs.comments.$el.offsetTop)
           this.themeTopYs.push(this.$refs.recommends.$el.offsetTop)
+          //加一个最大值，方便我们滚动的y值和区间比较
+          this.themeTopYs.push(Number.MAX_VALUE)
+
           
           console.log(this.themeTopYs);
       // this.getThemeTopYs()
