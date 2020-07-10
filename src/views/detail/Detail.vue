@@ -31,6 +31,7 @@
         ref="recommends"
       />
     </scroll>
+    <detail-bottom-bar />
   </div>
 </template> 
 
@@ -42,6 +43,7 @@
   import DetailGoodsInfo from './childComps/DetailGoodsInfo';
   import DetailParamInfo from './childComps/DetailParamInfo';
   import DetailCommentInfo from './childComps/DetailCommentInfo';
+  import DetailBottomBar from './childComps/DetailBottomBar';
 
   import {getDetail,Goods,Shop,GoodsParam,getRecommend,} from 'network/detail.js';
   import {debounce} from 'common/untils.js';
@@ -69,6 +71,19 @@
       }
     },
     mixins:[itemLitenerMixin],
+    components: {
+      DetailNav,
+      DetailSwiper,
+      DetailBaseInfo,
+      DetailShopInfo,
+      DetailGoodsInfo,
+      DetailParamInfo,
+      DetailCommentInfo,
+      DetailBottomBar,
+      
+      Scroll,
+      GoodsList
+    },
     methods: {
       imageLoad() {
         // this.newRefresh()
@@ -93,21 +108,8 @@
             console.log(i)
             this.$refs.nav.currentIndex = this.currentIndex
           }
-        }
-        
-        
+        } 
       }
-    },
-    components: {
-      DetailNav,
-      DetailSwiper,
-      DetailBaseInfo,
-      DetailShopInfo,
-      DetailGoodsInfo,
-      DetailParamInfo,
-      DetailCommentInfo,
-      Scroll,
-      GoodsList
     },
     created() {
       //1.save iid
