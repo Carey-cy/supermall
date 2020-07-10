@@ -32,6 +32,7 @@
       />
     </scroll>
     <detail-bottom-bar />
+    <back-top @click.native="backClick" v-show="isShow"/>
   </div>
 </template> 
 
@@ -47,10 +48,12 @@
 
   import {getDetail,Goods,Shop,GoodsParam,getRecommend,} from 'network/detail.js';
   import {debounce} from 'common/untils.js';
-  import {itemLitenerMixin} from 'common/mixin.js';
+  import {itemLitenerMixin,backTopMixIn} from 'common/mixin.js';
 
   import Scroll from 'components/common/scroll/Scroll';
   import GoodsList from 'components/content/goods/GoodsList';
+  import BackTop from 'components/content/back-top/BackTop';
+
 
   export default {
     name:'Detail',
@@ -67,10 +70,11 @@
         // itemImgLisener: null  和home.vue共有，放入混入中
         themeTopYs:[],
         getThemeTopYs: null,
-        currentIndex: 0
+        currentIndex: 0,
+        
       }
     },
-    mixins:[itemLitenerMixin],
+    mixins:[itemLitenerMixin,backTopMixIn],
     components: {
       DetailNav,
       DetailSwiper,
@@ -82,7 +86,8 @@
       DetailBottomBar,
       
       Scroll,
-      GoodsList
+      GoodsList,
+      
     },
     methods: {
       imageLoad() {
@@ -109,7 +114,10 @@
             this.$refs.nav.currentIndex = this.currentIndex
           }
         } 
-      }
+        //3.判断back-top是否显示
+        this.listenShowBackTop(position)
+      },
+ 
     },
     created() {
       //1.save iid

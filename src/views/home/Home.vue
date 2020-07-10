@@ -42,7 +42,7 @@
 
   import {getHomeMultidata,getHomeGoods} from 'network/home.js';
   import {debounce} from 'common/untils.js';
-  import {itemLitenerMixin} from 'common/mixin.js';
+  import {itemLitenerMixin,backTopMixIn} from 'common/mixin.js';
 
   export default {
     name: 'Home',
@@ -77,7 +77,7 @@
      
       }
     },
-    mixins:[itemLitenerMixin],
+    mixins:[itemLitenerMixin,backTopMixIn],
     created(){
       //请求多个数据
       this.getHomeMultidata()
@@ -135,14 +135,16 @@
         this.$refs.tabControl1.currentIndex = index;
         this.$refs.tabControl2.currentIndex = index;
       },
-      backClick(){
-        this.$refs.scroll.bscrollTo(0,0)
-      },
+      //使用混入
+      // backClick(){
+      //   this.$refs.scroll.bscrollTo(0,0)
+      // },
       contentScroll(position){
-        //判断back-top是否显示
+        //1.判断back-top是否显示，使用混入
         // console.log(position)
-        this.isShow = Math.abs(position.y) > 1000;
-        //决定tabControl是否吸顶（position：fixed）
+        // this.isShow = Math.abs(position.y) > 1000;
+        this.listenShowBackTop(position)
+        //2.决定tabControl是否吸顶（position：fixed）
         this.isTabFixed = -(position.y) > this.tabOffsetTop
       },    
       loadMore(){
