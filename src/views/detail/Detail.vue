@@ -4,7 +4,7 @@
       class="detail-nav"
       @titleClick="titleClick"
       ref="nav"
-    />
+    /> 
     <scroll
       class="content"
       ref="scroll"
@@ -31,7 +31,7 @@
         ref="recommends"
       />
     </scroll>
-    <detail-bottom-bar />
+    <detail-bottom-bar @addCart = "addToCart"/>
     <back-top @click.native="backClick" v-show="isShow"/>
   </div>
 </template> 
@@ -117,6 +117,19 @@
         //3.判断back-top是否显示
         this.listenShowBackTop(position)
       },
+      addToCart() {
+        //1.获取购物车需要展示的商品基本信息
+        const product = {};
+        product.image = this.topImages[0];
+        product.title = this.goods.title;
+        product.desc = this.goods.desc;
+        product.price = this.goods.realPrice;
+        product.iid = this.iid;
+
+        //2.将商品添加到购物车
+        this.$store.commit('addCart',product)
+
+      }
  
     },
     created() {
