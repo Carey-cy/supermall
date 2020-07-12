@@ -11,6 +11,7 @@
       @scroll="contentScroll"
       :probeType="3"
     >
+  
       <detail-swiper :top-images="topImages" />
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
@@ -127,7 +128,8 @@
         product.iid = this.iid;
 
         //2.将商品添加到购物车
-        this.$store.commit('addCart',product)
+        // this.$store.commit('addCart',product)
+        this.$store.dispatch('addCart',product)
 
       }
  
