@@ -1,3 +1,7 @@
+
+import {ADD_COUTER,ADD_CART} from './mutation-types'
+
+
 export default {
   addCart(context,payload){
     //加一个判断，查找已存在的商品，不再重复添加而是将数量加一
@@ -13,11 +17,11 @@ export default {
 
     if(oldProduct) {
       // oldProduct.count += 1 修改state的操作仍然只能在mutations中，这里不可以直接修改state
-      context.commit('addCouter',oldProduct)
+      context.commit(ADD_COUTER,oldProduct)
     }else{
       payload.count = 1
       // state.cartList.push(payload)  ,同理
-      context.commit('addCart',payload)
+      context.commit(ADD_CART,payload)
     }
   }
 }
