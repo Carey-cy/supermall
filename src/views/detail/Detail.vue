@@ -50,6 +50,7 @@
   import {getDetail,Goods,Shop,GoodsParam,getRecommend,} from 'network/detail.js';
   import {debounce} from 'common/untils.js';
   import {itemLitenerMixin,backTopMixIn} from 'common/mixin.js';
+  import {mapActions} from 'vuex';
 
   import Scroll from 'components/common/scroll/Scroll';
   import GoodsList from 'components/content/goods/GoodsList';
@@ -91,6 +92,7 @@
       
     },
     methods: {
+      ...mapActions(['addCart']),
       imageLoad() {
         // this.newRefresh()
         console.log("scorll",this.$refs.scroll.refresh())
@@ -129,7 +131,15 @@
 
         //2.将商品添加到购物车
         // this.$store.commit('addCart',product)
-        this.$store.dispatch('addCart',product)
+        // this.$store.dispatch('addCart',product).then(res => {
+        //   console.log(res)
+        // })
+
+        //上面通过mapActions映射后， 可以直接使用this.addCart了
+        this.addCart(product).then(res => {
+          // console.log(res)
+         this.$toast.show(res)
+        })
 
       }
  

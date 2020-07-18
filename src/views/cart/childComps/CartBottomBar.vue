@@ -9,7 +9,7 @@
       合计:{{totalPrice}}
     </div>
 
-    <div class="calculate">
+    <div class="calculate" @click = "clacClick">
       去计算({{checkLength}})
     </div>
   </div>
@@ -52,11 +52,18 @@
         //   return true
         // }
       },
+    },
+    methods: {
       checkClick() {
         if(this.isSelectAll) { //全选
           this.cartList.forEach(item => item.checked = false)
         }else{ //部分不选或都不选
           this.cartList.forEach(item => item.checked = true)
+        }
+      },
+      clacClick() {
+        if(!this.isSelectAll){
+          this.$toast.show('请选择要购买的商品',2000)
         }
       }
     },
