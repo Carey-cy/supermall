@@ -9,7 +9,7 @@ module.exports = {
       selectorBlackList: ['ignore','tab-bar','tab-bar-item'], //指定不需要转换的类
       exclude: [/TabBar/], //指定不要转换的文件，数组内应该是正则表达式
       minPixelVaule: 1, //小于或者等于1px不转换为视窗单位
-      mediaQuery: flase, //允许在媒体查询中转换'px'
+      mediaQuery: false //允许在媒体查询中转换'px'
     }
   }
 }
